@@ -1,0 +1,150 @@
+tproxy-port: 7893
+bind-address: "*"
+mode: rule
+allow-lan: true
+log-level: silent
+external-controller: 0.0.0.0:9090
+external-ui: yacd-gh-pages
+unified-delay: true
+ipv6: false
+dns:
+  enable: true
+  ipv6: false
+  listen: 0.0.0.0:1053
+  enhanced-mode: redir-host
+  use-host: true
+  nameserver:
+    - 1.1.1.1
+  fallback:
+    - 1.0.0.1
+    - https://cloudflare-dns.com/dns-query
+proxies:
+  - name: harisID
+    server: servtelkom.executivevpn.asia
+    port: 443
+    type: vmess
+    uuid: 025b4af1-2f4e-4f17-b35c-83596ec764d0
+    alterId: 0
+    cipher: auto
+    tls: true
+    skip-cert-verify: true
+    servername: sgdo.bcodestore.my.id
+    network: ws
+    ws-opts:
+      path: /vmess
+      headers:
+        Host: sgdo.bcodestore.my.id
+    udp: true
+  - name: jagoanssh-janunu-JAGOANSSH
+    server: sg5.vmes.xyz
+    port: 443
+    type: vmess
+    uuid: ef9857bb-6d64-43ef-88ec-b61e8567708f
+    alterId: 0
+    cipher: auto
+    tls: true
+    skip-cert-verify: true
+    servername: servtelkom.executivevpn.asia
+    network: ws
+    ws-opts:
+      path: /JAGOANSSH/
+      headers:
+        Host: sg5.vmes.xyz
+    udp: true
+  - name: sg3.v2-ray.com
+    server: servtelkom.executivevpn.asia
+    port: 443
+    type: vmess
+    uuid: fbf78c1f-6f42-45e0-a1a9-67de703b90f8
+    alterId: 0
+    cipher: auto
+    tls: true
+    skip-cert-verify: true
+    servername: sg3.v2-ray.com
+    network: ws
+    ws-opts:
+      path: /fastssh/adududu/636f320aaffb0/
+      headers:
+        Host: sg3.v2-ray.com
+    udp: true
+  - name: dynamic-sg2b.obfs.xyz
+    server: 104.22.24.131
+    port: 443
+    type: vmess
+    uuid: 4ac28e43-c4fd-41b2-a59d-599e8218e0a1
+    alterId: 0
+    cipher: auto
+    tls: true
+    skip-cert-verify: true
+    servername: dynamic-sg2b.obfs.xyz
+    network: ws
+    ws-opts:
+      path: /fastssh
+      headers:
+        Host: dynamic-sg2b.obfs.xyz
+    udp: true
+  - name: whyvpn-asem
+    server: 104.22.24.131
+    port: 443
+    type: vmess
+    uuid: 747b2ee6-1363-446b-850f-1f71814bc03b
+    alterId: 0
+    cipher: auto
+    tls: true
+    skip-cert-verify: true
+    servername: do2.kitu.xyz
+    network: grpc
+    grpc-opts:
+      grpc-service-name: v2ray-vmess-grpc
+    udp: true
+proxy-groups:
+  - name: FASTSSH-SSHKIT-HOWDY
+    type: select
+    proxies:
+      - jagoanssh-janunu-JAGOANSSH
+      - sg3.v2-ray.com
+      - dynamic-sg2b.obfs.xyz
+      - whyvpn-asem
+      - LOAD-BALANCE
+      - BEST-PING
+      - FALLBACK
+      - DIRECT
+  - name: LOAD-BALANCE
+    type: load-balance
+    strategy: consistent-hashing
+    url: http://hi.bonds.id/ping
+    interval: 300
+    proxies:
+      - jagoanssh-janunu-JAGOANSSH
+      - sg3.v2-ray.com
+      - dynamic-sg2b.obfs.xyz
+      - whyvpn-asem
+  - name: BEST-PING
+    type: url-test
+    url: http://hi.bonds.id/ping
+    interval: 300
+    tolerance: 50
+    proxies:
+      - jagoanssh-janunu-JAGOANSSH
+      - sg3.v2-ray.com
+      - dynamic-sg2b.obfs.xyz
+      - whyvpn-asem
+  - name: FALLBACK
+    type: fallback
+    url: http://hi.bonds.id/ping
+    interval: 300
+    proxies:
+      - jagoanssh-janunu-JAGOANSSH
+      - sg3.v2-ray.com
+      - dynamic-sg2b.obfs.xyz
+      - whyvpn-asem
+rule-providers:
+  clash:
+    type: http
+    behavior: domain
+    url: https://howdy.id/download/rules/clash.txt
+    path: ./providers/rule-provider_clash.yaml
+    interval: 86400
+rules:
+  - RULE-SET,clash,REJECT
+  - MATCH,FASTSSH-SSHKIT-HOWDY
