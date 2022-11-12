@@ -36,7 +36,7 @@ proxies:
         Host: sgdo.bcodestore.my.id
     udp: true
   - name: jagoanssh-janunu-JAGOANSSH
-    server: sg5.vmes.xyz
+    server: servtelkom.executivevpn.asia
     port: 443
     type: vmess
     uuid: ef9857bb-6d64-43ef-88ec-b61e8567708f
@@ -44,7 +44,7 @@ proxies:
     cipher: auto
     tls: true
     skip-cert-verify: true
-    servername: servtelkom.executivevpn.asia
+    servername: sg5.vmes.xyz
     network: ws
     ws-opts:
       path: /JAGOANSSH/
@@ -101,6 +101,7 @@ proxy-groups:
   - name: FASTSSH-SSHKIT-HOWDY
     type: select
     proxies:
+      - harisID
       - jagoanssh-janunu-JAGOANSSH
       - sg3.v2-ray.com
       - dynamic-sg2b.obfs.xyz
@@ -115,6 +116,7 @@ proxy-groups:
     url: http://hi.bonds.id/ping
     interval: 300
     proxies:
+      - harisID
       - jagoanssh-janunu-JAGOANSSH
       - sg3.v2-ray.com
       - dynamic-sg2b.obfs.xyz
@@ -125,6 +127,7 @@ proxy-groups:
     interval: 300
     tolerance: 50
     proxies:
+      - harisID
       - jagoanssh-janunu-JAGOANSSH
       - sg3.v2-ray.com
       - dynamic-sg2b.obfs.xyz
@@ -134,6 +137,7 @@ proxy-groups:
     url: http://hi.bonds.id/ping
     interval: 300
     proxies:
+      - harisID
       - jagoanssh-janunu-JAGOANSSH
       - sg3.v2-ray.com
       - dynamic-sg2b.obfs.xyz
